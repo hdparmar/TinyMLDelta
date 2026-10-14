@@ -1,0 +1,30 @@
+# MISRA C:2012 findings this port accepts on purpose.
+# Each block names the deviation in MISRA.md that justifies it.
+# Format: <check id>:<file pattern>
+# Anything NOT listed here fails `make misra`.
+
+# D-01  Flash is memory-mapped: one function turns an address into a pointer.
+misra-c2012-11.4:*src/tmd_port_stm32l4.c
+
+# D-02  The port callbacks take void pointers, because tmd_ports_t says so.
+misra-c2012-11.5:*src/tmd_port_stm32l4.c
+
+# D-03  ST HAL register macros cast fixed addresses to pointers.
+misra-c2012-11.4:*src/board.c
+
+# D-04  memcpy/memset stand-ins: standard names, standard void * signatures.
+misra-c2012-21.2:*inc/string.h
+misra-c2012-11.5:*src/board.c
+
+# D-05  The core's log hook is printf-style, so the logger is variadic.
+misra-c2012-17.1:*src/board.c
+misra-c2012-11.6:*src/board.c
+
+# D-06  Entry points called only from code outside this check: the vector
+#       table in ST's startup file, and the TinyMLDelta core.
+misra-c2012-8.7:*src/main.c
+misra-c2012-8.7:*src/board.c
+misra-c2012-8.7:*src/tmd_port_stm32l4.c
+
+# D-07  ST's HAL configuration template defines macros only ST's code reads.
+misra-c2012-2.5:*inc/stm32l4xx_hal_conf.h
