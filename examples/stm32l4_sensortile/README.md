@@ -156,19 +156,6 @@ The repo's own test suite (`SAN=1 tests/run_all.sh`) and the POSIX demo
 (`examples/posix/run_demo.sh`) still pass. The port doesn't change any
 existing file except the top-level README.
 
-## MISRA C
-
-The port's own code follows MISRA C:2012, a set of C coding rules from the car
-industry, and cppcheck checks it:
-
-```bash
-make misra STM32CUBE=/path/to/STM32Cube_FW_L4
-```
-
-Seven exceptions to the rules remain, and [MISRA.md](MISRA.md) gives the
-reason for each one. Any other finding makes the command fail. We ran the 11
-hardware tests on the build after the MISRA changes.
-
 ## Size and speed
 
 The firmware uses 11,072 bytes of flash and 22,640 bytes of RAM, and 16 KiB of
@@ -203,6 +190,4 @@ src/main.c                boot, find the patch, apply it, report, blink
 src/board.c               LED, RAM log, memcpy and memset
 stm32l476xg.ld            linker script; the application can use 384 KiB
 tools/tmd_host.py         provision, stage, run, verify, status over SWD
-misra/suppressions.txt    the accepted MISRA findings, one block per exception
-MISRA.md                  what MISRA C is, and the reason for each exception
 ```

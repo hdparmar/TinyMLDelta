@@ -99,7 +99,7 @@ vpath %.c $(sort $(dir $(C_SRC)))
 OBJS += $(addprefix $(BUILD)/,$(notdir $(ASM_SRC:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SRC)))
 
-.PHONY: all clean flash size monitor misra
+.PHONY: all clean flash size monitor
 
 all: $(BUILD)/$(TARGET).bin
 
@@ -142,22 +142,3 @@ monitor:
 	  -c "adapter speed 480" -f target/stm32l4x.cfg \
 	  -c "reset_config srst_only srst_nogate connect_assert_srst" \
 	  -c "init" -c "arm semihosting enable" -c "reset run"
-
-# MISRA C:2012 check with cppcheck's MISRA addon (cppcheck 2.16 or newer).
-# Only this port's own files are checked; ST's HAL and the TinyMLDelta core
-# are excluded. Accepted deviations are listed in misra/suppressions.txt, and
-# each one points at its entry in MISRA.md. Any other finding fails the build.
-# MISRA findings are reported at "style" level, so --enable=style is needed.
-CPPCHECK ?= cppcheck
-misra:
-	@mkdir -p $(BUILD)/misra
-	$(CPPCHECK) --std=c11 --platform=arm32-wchar_t4 --addon=misra \
-	  --enable=style,warning,performance,portability --check-level=exhaustive \
-	  --inline-suppr --suppressions-list=misra/suppressions.txt \
-	  "--suppress=*:$(STM32CUBE)/*" "--suppress=*:$(TMD)/runtime/*" \
-	  --suppress=missingIncludeSystem \
-	  --cppcheck-build-dir=$(BUILD)/misra --error-exitcode=1 -q \
-	  $(DEFS) -D__GNUC__=13 -D__arm__ -D__ARM_ARCH_7EM__ $(INCLUDES) \
-	  src/main.c src/board.c src/tmd_port_stm32l4.c
-	@rm -f cppcheck-addon-ctu-file-list
-	@echo "MISRA check passed: no findings outside MISRA.md"

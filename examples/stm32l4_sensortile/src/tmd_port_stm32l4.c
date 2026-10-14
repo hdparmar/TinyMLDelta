@@ -56,8 +56,8 @@
  * Reading flash directly
  * ==========================================================================
  * Flash is memory-mapped, so it is read through a pointer. This is the only
- * place in the firmware that turns a flash address into a pointer (MISRA
- * deviation D-01); main.c uses it too. */
+ * place in the firmware that turns a flash address into a pointer, and main.c
+ * uses it too. */
 const uint8_t *tmd_port_flash_ptr(uint32_t addr)
 {
   return (const uint8_t *)addr;
@@ -239,7 +239,7 @@ bool tmd_port_sync(void)
  * Flash primitives exposed to the core
  * ==========================================================================
  * The void pointers in these signatures are fixed by tmd_ports_t; each one is
- * converted to a byte pointer once, at the top (deviation D-02). */
+ * converted to a byte pointer once, at the top. */
 
 static bool port_flash_read(uint32_t addr, void *dst, uint32_t len)
 {
@@ -340,7 +340,7 @@ static bool port_flash_erase(uint32_t addr, uint32_t len)
  * and the host agree byte for byte. main.c uses it too, via tmd_ports(). */
 static uint32_t crc32_sw(const void *buf, size_t len)
 {
-  const uint8_t *p = (const uint8_t *)buf;     /* deviation D-02 */
+  const uint8_t *p = (const uint8_t *)buf;
   uint32_t c = 0xFFFFFFFFu;
 
   for (size_t i = 0u; i < len; i++) {

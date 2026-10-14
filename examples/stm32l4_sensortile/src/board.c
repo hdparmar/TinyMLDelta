@@ -18,8 +18,7 @@
 
 /* ==========================================================================
  * Freestanding libc: the two functions the HAL, the core and GCC's own
- * struct copies need. Their names and signatures are fixed by the C standard
- * (MISRA deviation D-04).
+ * struct copies need. Their names and signatures are fixed by the C standard.
  * ========================================================================== */
 
 void *memcpy(void *d, const void *s, size_t n)
@@ -207,7 +206,7 @@ static void log_conv(char conv, va_list *ap, bool lng, uint32_t width, bool zero
     case 'p': {
       const void *ptr = va_arg(*ap, const void *);
       log_puts("0x");
-      log_num((unsigned long)(uintptr_t)ptr, 16u, false, 8u, true);   /* deviation D-05 */
+      log_num((unsigned long)(uintptr_t)ptr, 16u, false, 8u, true);
       break;
     }
     case 'c':
@@ -231,7 +230,7 @@ static void log_conv(char conv, va_list *ap, bool lng, uint32_t width, bool zero
 /* printf-style logger. Supports %s %c %d %i %u %x %X %p %%, the 'l' and 'z'
  * length modifiers, zero padding and a width ("%08lx"). That covers every
  * format string the TinyMLDelta core uses. The core's log hook is variadic,
- * so this function has to be (MISRA deviation D-05). */
+ * so this function has to be too. */
 void board_log(const char *fmt, ...)
 {
   va_list ap;
